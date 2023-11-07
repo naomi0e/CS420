@@ -11,13 +11,24 @@ public class MainJavaFX extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			
-			Parent root = FXMLLoader.load(getClass().getResource("Assignment.fxml"));
-			Scene scene = new Scene(root);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+            loader.setController(MainController.getInstance());
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainFXML.fxml"));
+//            Parent root = loader.load();
+//            Scene scene = new Scene(root);
+//            primaryStage.setScene(scene);
+//            primaryStage.show();
+//
+//            MainController mainController = loader.getController();
+//            mainController.confirmation(primaryStage);
+//            
+            
+        } catch (Exception e) {
+            e.printStackTrace();
 		}
 	}
 	
