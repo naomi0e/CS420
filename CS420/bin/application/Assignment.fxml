@@ -45,6 +45,9 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <Pane layoutX="274.0" layoutY="-1.0" prefHeight="805.0" prefWidth="749.0" />
+      <Pane layoutX="274.0" layoutY="-1.0" prefHeight="805.0" prefWidth="749.0">
+         <children>
+            <Pane layoutX="14.0" layoutY="14.0" prefHeight="662.0" prefWidth="307.0" />
+         </children></Pane>
    </children>
 </AnchorPane>
