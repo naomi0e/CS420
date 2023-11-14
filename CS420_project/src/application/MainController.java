@@ -168,7 +168,7 @@ public class MainController implements Initializable{
 			listVeiw();
 		}else if(branchItems.contains(selectedTreeItem)) {
 			list.clear();
-			list.addAll(option1,option2,option3,option4,option5,option6,option7,option8,option9,option10);
+			list.addAll(option,option1,option2,option3,option4,option5,option6,option7,option8,option9,option10);
 			listView.setItems(list);
 		}else {
 			list.clear();
@@ -246,6 +246,16 @@ public class MainController implements Initializable{
 				}else if(selectedOption.equals("Change Height")) {
 					showPopup("Enter Height");
 					drawShape(newContainer);
+				}else if(selectedOption.equals("Delete Item")) {
+					showPopup("In Progress! Can't Delete Item!");
+					ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());	
+					if (seleContainer != null) {
+                        if (seleContainer.getContainerItems() == null) {
+                        	seleContainer.setContainerItems(new ArrayList<>());
+                        	
+                        }
+                        seleContainer.getContainerItems().remove(newItem);
+					}
 				}
 			}
 		});
