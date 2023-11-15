@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +36,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.scene.shape.*;
 
-//test
 
 
 public class MainController implements Initializable{
@@ -62,17 +59,12 @@ public class MainController implements Initializable{
     private TreeView<String> treeView;
     private TreeItem<String> root;
     private ObservableList<TreeItem<String>> branchItems;
-//    private TreeItem<String> itemContainer;
+    private TreeItem<String> itemContainer;
     private ObservableList<TreeItem<String>> leafItems;
-//    private TreeItem<String> item;
+    private TreeItem<String> item;
     private TreeItem<String> selectedTreeItem;
     
     private ObservableList<String> list = FXCollections.observableArrayList();
-    
-    @FXML private AnchorPane drawAnchorPane;	//holding rectangles on AnchorPane
-	private Group drawGroup; //to hold the multiple rectangles 
-	private Rectangle rectangle;
-	private Text text;	//to hold rectangle label
     
     private String selectedOption;
     private  Label label;
@@ -80,68 +72,43 @@ public class MainController implements Initializable{
     
     private ItemContainer newContainer;
     private List<ItemContainer> containersList= new ArrayList<ItemContainer>();
-    
-    private Item newItem;
-    private List<Item> itemList;
-    
-  //using hashmap to track item info and their rectangle;
-	private Map<ItemContainer, Group> drawnRectangles = new HashMap<>();
 
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		List<Item> commandCenterItems = new ArrayList<>();
-	    Item commandCenterItem = new Item("Drone", 10, 10, 10, 10);
-	    commandCenterItems.add(commandCenterItem);
-	    ItemContainer commandCenter = new ItemContainer("Command Center",commandCenterItems, 50, 50, 100, 100);
-	    
-    	List<Item> barnContainerItems = new ArrayList<>();
-        Item barnItem = new Item("Cattle", 10, 10, 10, 10);
-        barnContainerItems.add(barnItem);
-        ItemContainer barnContainer = new ItemContainer("Barn",barnContainerItems,50,50,100,100);
-        
-    	containersList.add(commandCenter);
-    	containersList.add(barnContainer);
 		
-		drawGroup = new Group();
-		drawAnchorPane.getChildren().add(drawGroup);
-		updateTreeView();
+		
+		
+		treeVieInitial();
 		listVeiw();
 	}
 		
-
-    private void updateTreeView() {
+    private void treeVieInitial() {
     	root = new TreeItem<String>("root");
     	treeView.setRoot(root);
-    
-    	//Clear the existing items in the TreeView
-    	root.getChildren().clear();
     	
-     // Add the updated items to the TreeView
+    	ItemContainer commandCenter = new ItemContainer("Command Center",50,50,100,100);
+    	ItemContainer barnContainer = new ItemContainer("Barn",50,50,100,100);
+    	containersList.add(commandCenter);
+    	containersList.add(barnContainer);
+    	
     	branchItems = root.getChildren();
-    	for(ItemContainer container: containersList) {
-    		TreeItem<String> itemContainer = new TreeItem<String>(container.getContainerName());
-    		branchItems.add(itemContainer);
-    		
-    		if(container.getContainerItems() != null) {
-    			leafItems = itemContainer.getChildren();
-    			
-    			for (Item item : container.getContainerItems()) {
-                    TreeItem<String> itemTreeItem = new TreeItem<String>(item.getItemName());
-                    leafItems.add(itemTreeItem);
-                }
-    		}
-    	}
-    }
-
+    	itemContainer = new TreeItem<String>(commandCenter.getContainerName());
+    	TreeItem<String> itemContainer2 = new TreeItem<String>(barnContainer.getContainerName());
+    	branchItems.addAll(itemContainer,itemContainer2);
     	
+    	leafItems = itemContainer.getChildren();
+    	item = new TreeItem<String>("Drone");
+//    	TreeItem<String> item2 = new TreeItem<String>("Cattle");
+
+    	leafItems.addAll(item);
+    }
     @FXML
     private void selectedTreeItem() {
     	selectedTreeItem = treeView.getSelectionModel().getSelectedItem();
-    	if(selectedTreeItem != null) {
-    		loadList(selectedTreeItem);
-    	}
+//    	System.out.println(selectedTreeItem.getValue());
+    	loadList(selectedTreeItem);
     }
     
 	public void listVeiw() {
@@ -153,28 +120,24 @@ public class MainController implements Initializable{
 	}
 	
 	
-	public void loadList(TreeItem<String> selectedTreeItem) {
-		String option = "Delete Item";
-		String option1 = "Add Item Container";
-		String option2 = "Add Item";
-		String option3 = "Delete Item-container";
-		String option4 = "Change Name";
-		String option5 = "Change Price";
-		String option6 = "Change Location X";
-		String option7 = "Change Location Y";
-		String option8 = "Change Length";
-		String option9 = "Change Width";
-		String option10 = "Change Height";
-		if(selectedTreeItem.equals(root)) {
+	public void loadList(TreeItem<String> selectedTreeItem2) {
+		if(selectedTreeItem2.equals(root)) {
+//			System.out.println("hello");
 			listVeiw();
-		}else if(branchItems.contains(selectedTreeItem)) {
+		}if(branchItems.contains(selectedTreeItem2)) {
 			list.clear();
-			list.addAll(option,option1,option2,option3,option4,option5,option6,option7,option8,option9,option10);
-			listView.setItems(list);
-		}else {
-			list.clear();
-			list.addAll(option,option4,option5,option6,option7,option8,option9,option10);
-			listView.setItems(list);
+			String option1 = "Add Item Container";
+			String option2 = "Add Item";
+			String option3 = "Delete item-container";
+			String option4 = "Change name";
+			String option5 = "Change Prive";
+			String option6 = "Change Location X";
+			String option7 = "Change Location Y";
+			String option8 = "Change Length";
+			String option9 = "Change Width";
+			String option10 = "Change Height";
+			list.addAll(option1,option2,option3,option4,option5,option6,option7,option8,option9,option10);
+			listView.setItems(list);;
 		}
 	}
 	
@@ -188,76 +151,14 @@ public class MainController implements Initializable{
 					showPopup("Enter Container Name");
 					showPopup("Enter X Co-oridnate");
 					showPopup("Enter Y Co-oridnate");
-					showPopup("Enter Width");
-					showPopup("Enter Height");
-					drawShape(newContainer);
+					showPopup("Enter width");
+					showPopup("Enter height");
 					containersList.add(newContainer);
-					updateTreeView();
-				}else if(selectedOption.equals("Change Name")) {
-					showPopup("Enter Container Name");
-					drawShape(newContainer);
-					updateTreeView();
-				}else if(selectedOption.equals("Change Price")) {
-					showPopup("Enter Price");
-				}else if(selectedOption.equals("Change Location X")) {
-					showPopup("Enter X Co-oridnate");
-					drawShape(newContainer);
-				}else if(selectedOption.equals("Change Location Y")) {
-					showPopup("Enter Y Co-oridnate");
-					drawShape(newContainer);
-				}else if(selectedOption.equals("Change Width")) {
-					showPopup("Enter Width");
-					drawShape(newContainer);
-				}else if(selectedOption.equals("Change Height")) {
-					showPopup("Enter Height");
-					drawShape(newContainer);
-				}else if(selectedOption.equals("Add Item")) {
-					newItem = new Item();
-					showPopup("Enter Container Name");
-					showPopup("Enter X Co-oridnate");
-					showPopup("Enter Y Co-oridnate");
-					showPopup("Enter Width");
-					showPopup("Enter Height");
-					ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());	
-					if (seleContainer != null) {
-                        if (seleContainer.getContainerItems() == null) {
-                        	seleContainer.setContainerItems(new ArrayList<>());
-                        	
-                        }
-                        seleContainer.getContainerItems().add(newItem);
-                    }
-
-					drawShape(seleContainer);
-					updateTreeView();
-				}else if(selectedOption.equals("Change Name")) {
-					showPopup("Enter Container Name");
-					drawShape(newContainer);
-					updateTreeView();
-				}else if(selectedOption.equals("Change Price")) {
-					showPopup("Enter Price");
-				}else if(selectedOption.equals("Change Location X")) {
-					showPopup("Enter X Co-oridnate");
-					drawShape(newContainer);
-				}else if(selectedOption.equals("Change Location Y")) {
-					showPopup("Enter Y Co-oridnate");
-					drawShape(newContainer);
-				}else if(selectedOption.equals("Change Width")) {
-					showPopup("Enter Width");
-					drawShape(newContainer);
-				}else if(selectedOption.equals("Change Height")) {
-					showPopup("Enter Height");
-					drawShape(newContainer);
-				}else if(selectedOption.equals("Delete Item")) {
-					showPopup("In Progress! Can't Delete Item!");
-					ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());	
-					if (seleContainer != null) {
-                        if (seleContainer.getContainerItems() == null) {
-                        	seleContainer.setContainerItems(new ArrayList<>());
-                        	
-                        }
-                        seleContainer.getContainerItems().remove(newItem);
-					}
 				}
+//				System.out.println(containersList.toString());
+				
+				
+
 			}
 		});
 	}
@@ -303,147 +204,61 @@ public class MainController implements Initializable{
             handleInput(input);
 //            System.out.println(newContainer.getContainerName());
         }
+        
+//        return input;
 	}
 
 	private void handleInput(String input) {
 		
+//		newContainer = new ItemContainer();
 		String labelText = label.getText();
-
+//		
+//		if(currentPopupLabel != null) {
+//			
+//		}
+		
 		if(labelText.equals("Enter Container Name")) {
-			if(selectedOption.equals("Add Item Container")) {
-				newContainer.setContainerName(input);				
-			}else if(selectedOption.equals("Change Name")&&selectedTreeItem.getValue() != null ) {
-				ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());				
-				seleContainer.setContainerName(input);					
-			}else if(selectedOption.equals("Add Item")) {
-				newItem.setItemName(input);
+			newContainer.setContainerName(input);
+			if(containersList.contains(selectedTreeItem.getValue())) {
+				System.out.println(selectedTreeItem.getValue());
 			}
-			
+//			else if(!(containersList.contains(selectedTreeItem.getValue())) ) {	
+//			}
 				
-		}else if(labelText.equals("Enter X Co-oridnate")) {
-			int intInput = Integer.parseInt(input);
-			if(selectedOption.equals("Add Item Container")) {
-				newContainer.setContainerX(intInput);				
-			}else if(selectedOption.equals("Change Location X")&&selectedTreeItem.getValue() != null ) {
-				ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());	
-				seleContainer.setContainerX(intInput);
-			}else if(selectedOption.equals("Add Item")) {
-				newItem.setItemX(intInput);
-			}
-				
-		}else if(labelText.equals("Enter Y Co-oridnate")) {
-			int intInput = Integer.parseInt(input);
-			if(selectedOption.equals("Add Item Container")) {				
-				newContainer.setContainerY(intInput);
-			}else if(selectedOption.equals("Change Location Y")&&selectedTreeItem.getValue() != null ) {
-				ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());	
-				seleContainer.setContainerY(intInput);
-			}else if(selectedOption.equals("Add Item")) {
-				newItem.setItemY(intInput);
-			}
-			
-			
-		}else if(labelText.equals("Enter Width")) {
-			int intInput = Integer.parseInt(input);
-			if(selectedOption.equals("Add Item Container")) {
-				newContainer.setContainerWidth(intInput);				
-			}else if(selectedOption.equals("Change Width")&&selectedTreeItem.getValue() != null ) {
-				ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());	
-				seleContainer.setContainerWidth(intInput);
-			}else if(selectedOption.equals("Add Item")) {
-				newItem.setItemWidth(intInput);
-			}
-			
-			
-		}else if(labelText.equals("Enter Height")) {
-			int intInput = Integer.parseInt(input);
-			if(selectedOption.equals("Add Item Container")) {				
-				newContainer.setContainerHeight(intInput);
-			}else if(selectedOption.equals("Change Height")&&selectedTreeItem.getValue() != null ) {
-				ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());	
-				seleContainer.setContainerHeight(intInput);
-			}else if(selectedOption.equals("Add Item")) {
-				newItem.setItemHeight(intInput);
-			}
-			
-			
-		}else if(labelText.equals("Enter Price")) {
-			int intInput = Integer.parseInt(input);
-			if(selectedOption.equals("Add Item Container")) {				
-				newContainer.setContainerHeight(intInput);
-			}else if(selectedOption.equals("Change Price")&&selectedTreeItem.getValue() != null ) {
-				ItemContainer seleContainer = findContainerByName(selectedTreeItem.getValue());	
-				seleContainer.setContainerHeight(intInput);
-
-			}
 		}
-
-		
-	}
-	private ItemContainer findContainerByName(String containerName) {
-	    for (ItemContainer container : containersList) {
-	        if (container.getContainerName().equals(containerName)) {
-	            return container;
-	        }
-	    }
-	    return null; // If not found, return null or handle it as needed
-	}
-	
-	public void drawShape(ItemContainer newContainer) {
-		
-		try {
-			//remove previous rectangle
-			Group group2 = drawnRectangles.get(newContainer);
-		    if (group2 != null) {
-		        drawGroup.getChildren().remove(group2);
-		        drawnRectangles.remove(newContainer);
-		    }
-	        // Check if container values are valid
-	        if (newContainer != null && newContainer.getContainerWidth() > 0 && newContainer.getContainerHeight() > 0) {
-	            rectangle = new Rectangle(newContainer.getContainerX(), newContainer.getContainerY(), newContainer.getContainerWidth(), newContainer.getContainerHeight());
-	            rectangle.setFill(Color.TRANSPARENT);
-	            rectangle.setStroke(Color.RED);
-
-	            text = new Text(newContainer.getContainerName());
-	            text.setLayoutX(newContainer.getContainerX() + 10);
-	            text.setLayoutY(newContainer.getContainerY() + 20);
-
-	            // Create a group to hold the rectangle and text
-	            Group group = new Group(rectangle, text);
-//	            drawGroup.getChildren().add(group);
-	            
-	          //update HashMap
-				drawnRectangles.put(newContainer,group);
-				drawGroup.getChildren().add(group);
+			
+		else if(labelText.equals("Enter X Co-oridnate")) {
+			int intInput = Integer.parseInt(input);
+			newContainer.setContainerX(intInput);
 				
-				if(newContainer.getContainerItems() != null) {
-					//containeritems rectangle
-					for (Item item : newContainer.getContainerItems()) {
-	                    Rectangle itemRectangle = new Rectangle(item.getItemX(), item.getItemY(), item.getItemWidth(), item.getItemHeight());
-	                    itemRectangle.setFill(Color.TRANSPARENT);
-	                    itemRectangle.setStroke(Color.BLUE);
-	                    Text itemText = new Text(item.getItemName());
-	                    itemText.setLayoutX(item.getItemX() + 10);
-	                    itemText.setLayoutY(item.getItemY() + 20);
+		}
+		else if(labelText.equals("Enter Y Co-oridnate")) {
+			int intInput = Integer.parseInt(input);
+			newContainer.setContainerY(intInput);
 
-	                    Group itemGroup = new Group(itemRectangle, itemText);
-	                    drawGroup.getChildren().add(itemGroup);
-	                }
-	            
-				}
-	        }
-	    } catch (Exception e) {
-	        // Handle any exceptions that might occur during rectangle creation
-	        e.printStackTrace();
-	    }
+		}
+		else if(labelText.equals("Enter Width")) {
+			int intInput = Integer.parseInt(input);
+			newContainer.setContainerWidth(intInput);
 
+		}
+		else if(labelText.equals("Enter Height")) {
+			int intInput = Integer.parseInt(input);
+			newContainer.setContainerHeight(intInput);;
+//			newContainer.setHeight(intInput);
+//			updateTreeView(newContainer.getcontainerName());
+//			displayListView.loadItems2();
+//			currentPopupLabel = null;
+//			drawShape(newContainer);
+//			loadItems2();
+		}
+//		branchItems.addAll(new TreeItem<String>(newContainer.getContainerName()));
+//		return newContainer;
+		
 		
 	}
+
+	
+
 	
 }
-	
-
-	
-
-	
-

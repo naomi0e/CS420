@@ -14,15 +14,9 @@ public class Item {
 	private int itemHeight;
 	
 
+	
 	public Item() {}
 	
-	public Item(String itemName, int itemX, int itemY, int itemWidth, int itemHeight) {
-		this.itemName = itemName;
-		this.itemX = itemX;
-		this.itemY = itemY;
-		this.itemWidth = itemWidth;
-		this.itemHeight = itemHeight;
-	}
 
 	public String getItemName() {
 		return itemName;
