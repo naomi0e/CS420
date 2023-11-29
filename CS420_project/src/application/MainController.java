@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +29,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -72,17 +75,44 @@ public class MainController implements Initializable{
     
     private ItemContainer newContainer;
     private List<ItemContainer> containersList= new ArrayList<ItemContainer>();
+    
+    @FXML
+    private ImageView drone;
+    @FXML
+    private Button scan;
+    @FXML 
+    private Button home;
+    @FXML
+    private Button visit;
+    @FXML
+	private void scanFarm() {
+		System.out.println("scan Farm");
+	}
+    @FXML
+	private void visitContainer() {
+		System.out.println("visit Container");
 
+	}
+	@FXML
+	private void goHome() {
+		System.out.println("go Home");
+		TranslateTransition translate = new TranslateTransition();
+		translate.setByX(50);
+		translate.setByY(50);
+
+
+	}
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
 		
-		
 		treeVieInitial();
 		listVeiw();
 	}
+	
+
 		
     private void treeVieInitial() {
     	root = new TreeItem<String>("root");
