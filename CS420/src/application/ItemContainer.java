@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 public class ItemContainer {
 	
 	
-	private List<Item> containerItems = new ArrayList<Item>();
+	private List<Item> containerItems;
 	private String containerName;
 	private int containerX;
 	private int containerY;
@@ -17,17 +17,24 @@ public class ItemContainer {
 	private int containerWidth;
 	private int containerHeight;
 	
-	public ItemContainer() {}
+	public ItemContainer() {containerItems = new ArrayList<>(); }
 
-	public ItemContainer(String containerName, int containerX, int containerY, int containerWidth, int containerHeight){
+	public ItemContainer(String containerName, List<Item>  containerItems,int containerX, int containerY, int containerWidth, int containerHeight){
 		this.containerName = containerName;
+		this.containerItems = containerItems;
 		this.containerX = containerX;
 		this.containerY = containerY;
 		this.containerWidth = containerWidth;
 		this.containerHeight = containerHeight;
 	}
 	
-	
+	public void addItem(Item item) {
+        containerItems.add(item); // Add an item to the containerItems list
+    }
+
+    public void removeItem(Item item) {
+        containerItems.remove(item); // Remove an item from the containerItems list
+    }
 
 
 	
